@@ -1,0 +1,828 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>Distribuição de Cadeiras - Alagoas (Deputado Federal)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px 40px;
+            background-color: #020617;
+            color: #e5e7eb;
+        }
+        h1 {
+            text-align: center;
+            color: #f9fafb;
+        }
+        h2 {
+            margin-top: 40px;
+            color: #e5e7eb;
+        }
+        p.info {
+            font-size: 14px;
+            color: #cbd5f5;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+            background-color: #020617;
+            color: #e5e7eb;
+        }
+        th, td {
+            border: 1px solid #1f2937;
+            padding: 6px 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #111827;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #030712;
+        }
+        .flex-lists {
+            display: flex;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        .list-box {
+            flex: 1;
+            background-color: #020617;
+            border: 1px solid #1f2937;
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+        .list-box h3 {
+            text-align: center;
+            margin-top: 0;
+            color: #e5e7eb;
+        }
+        .cand-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border-radius: 6px;
+            border: 1px solid #1f2937;
+            background: #020617;
+            min-height: 260px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .cand-list li {
+            padding: 6px 10px;
+            border-bottom: 1px solid #111827;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .cand-list li:hover {
+            background-color: #111827;
+        }
+        .chart-container {
+            margin-top: 40px;
+            text-align: center;
+            background-color: #020617;
+            border-radius: 10px;
+            padding: 16px 18px;
+            border: 1px solid #1f2937;
+        }
+        #chart-interativo {
+            max-width: 100%;
+        }
+        .highlight-box {
+            margin-top: 24px;
+            margin-bottom: 8px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 1px solid #38bdf8;
+            display: inline-flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .highlight-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #93c5fd;
+        }
+        .highlight-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #f9fafb;
+            padding: 2px 10px;
+            border-radius: 8px;
+            border: 2px solid #38bdf8;
+            display: inline-block;
+        }
+        .highlight-percent {
+            font-size: 18px;
+            margin-left: 2px;
+        }
+        /* Caixa de explicação da metodologia da expectativa */
+        .methodology-box {
+            margin-top: 8px;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background-color: #020617;
+            border: 1px dashed #4b5563;
+            color: #9ca3af;
+            font-size: 13px;
+            max-width: 800px;
+        }
+        .methodology-box strong {
+            color: #e5e7eb;
+        }
+        /* Caixa de texto em branco para análise do Cenário 1 */
+        .text-box {
+            margin-top: 18px;
+            margin-bottom: 10px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            background-color: #020617;
+            border: 1px dashed #4b5563;
+            color: #9ca3af;
+            font-size: 13px;
+            min-height: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Distribuição de Cadeiras - Alagoas (Deputado Federal)</h1>
+
+<p class="info">
+    Total de votos válidos (nominais + legenda): <strong>1,650,763.0</strong><br>
+    Número de cadeiras: <strong>9</strong><br>
+    Quociente Eleitoral (QE) – regras de 2026: <strong>183418</strong><br>
+    Limiar da última cadeira (cenário base, regras 2026): 
+    <strong>130,356.50</strong>
+</p>
+
+<div class="highlight-box">
+    <div class="highlight-label">Expectativa de cadeira</div>
+    <div class="highlight-value">0,76<span class="highlight-percent"></span></div>
+</div>
+
+<div class="methodology-box">
+    <strong>Como calculamos a expectativa de cadeiras?</strong><br>
+    A expectativa de cadeiras é estimada por um modelo de inteligência artificial treinado com
+    séries históricas desde 2012. Sempre que os dados estão disponíveis, o modelo considera, para
+    cada partido e município, informações como: número de filiados por município, recursos de
+    campanha e de organizações partidárias, votos para vereador, prefeito, deputado estadual,
+    deputado federal, governador e presidente, além da estrutura organizativa do partido em cada
+    cidade. <br><br>
+    A partir dessa base histórica (2012 em diante) e das condições atuais do partido em cada
+    município, o modelo projeta o desempenho esperado nas eleições de 2026 para deputado federal
+    e, com isso, estima o número de cadeiras esperado para cada agremiação.
+</div>
+
+<h2>Cenário 1 – Regra 2022 (com barreira de 80% do QE nas sobras)</h2>
+<p class="info">
+    Apenas agremiações com pelo menos 80% do quociente eleitoral participam da distribuição das sobras.
+</p>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Agremiação</th>
+      <th>Votos</th>
+      <th>QP</th>
+      <th>Sobras</th>
+      <th>Cadeiras</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PP</td>
+      <td>546041.0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>MDB</td>
+      <td>260713.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>PT/PCDOB/PV</td>
+      <td>234310.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>UNIÃO</td>
+      <td>170932.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>REPUBLICANOS</td>
+      <td>146523.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PSB</td>
+      <td>117921.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PSD</td>
+      <td>78589.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PSDB/CIDADANIA</td>
+      <td>46970.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PDT</td>
+      <td>16018.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PTB</td>
+      <td>10738.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>AVANTE</td>
+      <td>6718.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PSOL/REDE</td>
+      <td>4896.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PATRIOTA</td>
+      <td>3040.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>UP</td>
+      <td>2369.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>SOLIDARIEDADE</td>
+      <td>1865.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PMN</td>
+      <td>1092.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>AGIR</td>
+      <td>659.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PSTU</td>
+      <td>527.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PMB</td>
+      <td>383.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>DC</td>
+      <td>211.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PROS</td>
+      <td>121.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PCO</td>
+      <td>89.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PRTB</td>
+      <td>38.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="text-box">
+    <!-- Texto analítico (Alagoas) será inserido aqui posteriormente. -->
+</div>
+
+<h2>Cenário 2 – Regras de 2026 (sobras sem barreira de 80% do QE)</h2>
+<p class="info">
+    Todas as agremiações participam da distribuição das sobras, independentemente de atingirem 80% do quociente eleitoral.
+    A distribuição abaixo mantém as 9 cadeiras atualmente existentes.
+</p>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Agremiação</th>
+      <th>Votos</th>
+      <th>QP</th>
+      <th>Sobras</th>
+      <th>Cadeiras</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PP</td>
+      <td>546041.0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>MDB</td>
+      <td>260713.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>PT/PCDOB/PV</td>
+      <td>234310.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>UNIÃO</td>
+      <td>170932.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>REPUBLICANOS</td>
+      <td>146523.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>PSB</td>
+      <td>117921.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PSD</td>
+      <td>78589.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PSDB/CIDADANIA</td>
+      <td>46970.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PDT</td>
+      <td>16018.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PTB</td>
+      <td>10738.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>AVANTE</td>
+      <td>6718.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PSOL/REDE</td>
+      <td>4896.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PATRIOTA</td>
+      <td>3040.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>UP</td>
+      <td>2369.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>SOLIDARIEDADE</td>
+      <td>1865.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PMN</td>
+      <td>1092.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>AGIR</td>
+      <td>659.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PSTU</td>
+      <td>527.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PMB</td>
+      <td>383.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>DC</td>
+      <td>211.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PROS</td>
+      <td>121.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PCO</td>
+      <td>89.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>PRTB</td>
+      <td>38.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Simulador de Migração de Candidatos – PSB (dados de 2022 / Alagoas / Dep. Federal)</h2>
+<p class="info">
+    À esquerda, candidatos do PSB; à direita, candidatos dos demais partidos, considerando apenas candidatos
+    com situação deferida ou deferida com recurso. <br>
+    Clique em um candidato do PSB para simulá-lo fora do PSB. <br>
+    Clique em um candidato da lista de Outros partidos para adicioná-lo ao PSB. <br>
+    O gráfico logo abaixo mostra como isso altera os votos totais de cada agremiação e
+    quantos votos ainda faltam para conquistar a última cadeira, mantendo o número total de cadeiras em 9.
+</p>
+
+<div class="flex-lists">
+    <div class="list-box">
+        <h3>PSB</h3>
+        <ul id="lista-psb" class="cand-list"></ul>
+    </div>
+    <div class="list-box">
+        <h3>Outros partidos</h3>
+        <ul id="lista-outros" class="cand-list"></ul>
+    </div>
+</div>
+
+<div class="chart-container">
+    <h2>Regras de 2026 – Votos atuais e votos necessários para tomar a última cadeira (após migrações)</h2>
+    <canvas id="chart-interativo" height="120"></canvas>
+    <p class="info">
+        Barras azuis representam os votos atuais de cada agremiação (já considerando migrações de candidatos).
+        Em laranja, os votos adicionais necessários para que cada agremiação tome a última cadeira
+        na configuração atual. <br>
+        O rótulo <span style="border:2px solid red; padding:2px 4px; border-radius:4px;">PSB</span>
+        aparece destacado no eixo horizontal.
+    </p>
+</div>
+
+<script>
+    const partidosLabels = ["PP", "MDB", "PT/PCDOB/PV", "UNIÃO", "REPUBLICANOS", "PSB", "PSD", "PSDB/CIDADANIA", "PDT", "PTB", "AVANTE", "PSOL/REDE", "PATRIOTA", "UP", "SOLIDARIEDADE", "PMN", "AGIR", "PSTU", "PMB", "DC", "PROS", "PCO", "PRTB"];
+    const votosBase      = [546041, 260713, 234310, 170932, 146523, 117921, 78589, 46970, 16018, 10738, 6718, 4896, 3040, 2369, 1865, 1092, 659, 527, 383, 211, 121, 89, 38];
+    const candidatosRaw  = [{"SG_PARTIDO": "AGIR", "NM_CANDIDATO": "HEMERSON LEITE DOS SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 135, "AGREMIACAO": "AGIR"}, {"SG_PARTIDO": "AGIR", "NM_CANDIDATO": "JANAINA DE OLIVEIRA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 8, "AGREMIACAO": "AGIR"}, {"SG_PARTIDO": "AGIR", "NM_CANDIDATO": "JOSÉ GOMES ALVES", "QT_VOTOS_NOMINAIS_VALIDOS": 62, "AGREMIACAO": "AGIR"}, {"SG_PARTIDO": "AGIR", "NM_CANDIDATO": "JOSÉ ROBSON DOS SANTOS AMORIM", "QT_VOTOS_NOMINAIS_VALIDOS": 30, "AGREMIACAO": "AGIR"}, {"SG_PARTIDO": "AGIR", "NM_CANDIDATO": "NAILTON VITOR DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 84, "AGREMIACAO": "AGIR"}, {"SG_PARTIDO": "AGIR", "NM_CANDIDATO": "THYCIA FIRMINO RATTES", "QT_VOTOS_NOMINAIS_VALIDOS": 8, "AGREMIACAO": "AGIR"}, {"SG_PARTIDO": "AGIR", "NM_CANDIDATO": "WAGNER ELIEZER CARDOSO DE MOURA", "QT_VOTOS_NOMINAIS_VALIDOS": 211, "AGREMIACAO": "AGIR"}, {"SG_PARTIDO": "AVANTE", "NM_CANDIDATO": "ALDAIR GONÇALVES DA FONSECA", "QT_VOTOS_NOMINAIS_VALIDOS": 1077, "AGREMIACAO": "AVANTE"}, {"SG_PARTIDO": "AVANTE", "NM_CANDIDATO": "CAIO LIMA DOS SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 535, "AGREMIACAO": "AVANTE"}, {"SG_PARTIDO": "AVANTE", "NM_CANDIDATO": "DANUBIA KARLA DA SILVA BARBOSA", "QT_VOTOS_NOMINAIS_VALIDOS": 881, "AGREMIACAO": "AVANTE"}, {"SG_PARTIDO": "AVANTE", "NM_CANDIDATO": "DEIVIDY CARLOS SANTOS FERREIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 217, "AGREMIACAO": "AVANTE"}, {"SG_PARTIDO": "AVANTE", "NM_CANDIDATO": "GERALDO CARDOSO DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 387, "AGREMIACAO": "AVANTE"}, {"SG_PARTIDO": "AVANTE", "NM_CANDIDATO": "LERIDA LOBO GOMES VITORINO", "QT_VOTOS_NOMINAIS_VALIDOS": 1842, "AGREMIACAO": "AVANTE"}, {"SG_PARTIDO": "AVANTE", "NM_CANDIDATO": "LINDOMAR FERREIRA DE QUEIROZ", "QT_VOTOS_NOMINAIS_VALIDOS": 258, "AGREMIACAO": "AVANTE"}, {"SG_PARTIDO": "CIDADANIA", "NM_CANDIDATO": "ISABELLA CARLA SILVA GOUVEIA", "QT_VOTOS_NOMINAIS_VALIDOS": 515, "AGREMIACAO": "PSDB/CIDADANIA"}, {"SG_PARTIDO": "CIDADANIA", "NM_CANDIDATO": "JOSÉ REGIS BARROS CAVALCANTE", "QT_VOTOS_NOMINAIS_VALIDOS": 2417, "AGREMIACAO": "PSDB/CIDADANIA"}, {"SG_PARTIDO": "DC", "NM_CANDIDATO": "JOSIMAR FIRMINO DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 173, "AGREMIACAO": "DC"}, {"SG_PARTIDO": "MDB", "NM_CANDIDATO": "FERNANDO ANTÔNIO MACEDO HOLANDA", "QT_VOTOS_NOMINAIS_VALIDOS": 3966, "AGREMIACAO": "MDB"}, {"SG_PARTIDO": "MDB", "NM_CANDIDATO": "ISNALDO BULHÕES BARROS JÚNIOR", "QT_VOTOS_NOMINAIS_VALIDOS": 83965, "AGREMIACAO": "MDB"}, {"SG_PARTIDO": "MDB", "NM_CANDIDATO": "JULLYENE CRISTINE LINS ROCHA", "QT_VOTOS_NOMINAIS_VALIDOS": 671, "AGREMIACAO": "MDB"}, {"SG_PARTIDO": "MDB", "NM_CANDIDATO": "LAISE LIMA VIEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 3520, "AGREMIACAO": "MDB"}, {"SG_PARTIDO": "MDB", "NM_CANDIDATO": "MANOEL GERAERTES ALVES CRUZ", "QT_VOTOS_NOMINAIS_VALIDOS": 7990, "AGREMIACAO": "MDB"}, {"SG_PARTIDO": "MDB", "NM_CANDIDATO": "MARCOS ANDRÉ RAMALHO MARTINS", "QT_VOTOS_NOMINAIS_VALIDOS": 6277, "AGREMIACAO": "MDB"}, {"SG_PARTIDO": "MDB", "NM_CANDIDATO": "MAURÍCIO QUINTELLA MALTA LESSA", "QT_VOTOS_NOMINAIS_VALIDOS": 34097, "AGREMIACAO": "MDB"}, {"SG_PARTIDO": "MDB", "NM_CANDIDATO": "RAFAEL DE GOES BRITO", "QT_VOTOS_NOMINAIS_VALIDOS": 58134, "AGREMIACAO": "MDB"}, {"SG_PARTIDO": "MDB", "NM_CANDIDATO": "SEVERINO DE LIRA PESSOA", "QT_VOTOS_NOMINAIS_VALIDOS": 32508, "AGREMIACAO": "MDB"}, {"SG_PARTIDO": "MDB", "NM_CANDIDATO": "SILVANIA BATINGA DE OLIVEIRA BARBOSA", "QT_VOTOS_NOMINAIS_VALIDOS": 14193, "AGREMIACAO": "MDB"}, {"SG_PARTIDO": "PATRIOTA", "NM_CANDIDATO": "ADEMARIO DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 284, "AGREMIACAO": "PATRIOTA"}, {"SG_PARTIDO": "PATRIOTA", "NM_CANDIDATO": "APOLONIA GOMES DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 44, "AGREMIACAO": "PATRIOTA"}, {"SG_PARTIDO": "PATRIOTA", "NM_CANDIDATO": "ARIELLE FERNANDES DUARTE", "QT_VOTOS_NOMINAIS_VALIDOS": 544, "AGREMIACAO": "PATRIOTA"}, {"SG_PARTIDO": "PATRIOTA", "NM_CANDIDATO": "CARLOS SANDRO FERREIRA FREIRE", "QT_VOTOS_NOMINAIS_VALIDOS": 548, "AGREMIACAO": "PATRIOTA"}, {"SG_PARTIDO": "PATRIOTA", "NM_CANDIDATO": "CÍCERO EDINALDO DE MENEZES", "QT_VOTOS_NOMINAIS_VALIDOS": 110, "AGREMIACAO": "PATRIOTA"}, {"SG_PARTIDO": "PATRIOTA", "NM_CANDIDATO": "ERICLES WAGNER DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 93, "AGREMIACAO": "PATRIOTA"}, {"SG_PARTIDO": "PATRIOTA", "NM_CANDIDATO": "REGINA CELIA DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 118, "AGREMIACAO": "PATRIOTA"}, {"SG_PARTIDO": "PATRIOTA", "NM_CANDIDATO": "SANDRO OLIVEIRA DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 251, "AGREMIACAO": "PATRIOTA"}, {"SG_PARTIDO": "PATRIOTA", "NM_CANDIDATO": "VALGETAN FERREIRA DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 642, "AGREMIACAO": "PATRIOTA"}, {"SG_PARTIDO": "PCO", "NM_CANDIDATO": "LEONARDO ARMANDO NUNES SOARES FILHO", "QT_VOTOS_NOMINAIS_VALIDOS": 19, "AGREMIACAO": "PCO"}, {"SG_PARTIDO": "PCO", "NM_CANDIDATO": "MARINA NOBRE TENÓRIO CRISÓSTOMO", "QT_VOTOS_NOMINAIS_VALIDOS": 55, "AGREMIACAO": "PCO"}, {"SG_PARTIDO": "PDT", "NM_CANDIDATO": "ANDREA LUZ DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 570, "AGREMIACAO": "PDT"}, {"SG_PARTIDO": "PDT", "NM_CANDIDATO": "CARLOS ANTONIO ALVES DE SOUZA", "QT_VOTOS_NOMINAIS_VALIDOS": 2934, "AGREMIACAO": "PDT"}, {"SG_PARTIDO": "PDT", "NM_CANDIDATO": "CICERO AURELIANO", "QT_VOTOS_NOMINAIS_VALIDOS": 1495, "AGREMIACAO": "PDT"}, {"SG_PARTIDO": "PDT", "NM_CANDIDATO": "EUCENIA MARIA VIEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 190, "AGREMIACAO": "PDT"}, {"SG_PARTIDO": "PDT", "NM_CANDIDATO": "GERALDO CARVALHO DE OLIVEIRA NETO", "QT_VOTOS_NOMINAIS_VALIDOS": 2264, "AGREMIACAO": "PDT"}, {"SG_PARTIDO": "PDT", "NM_CANDIDATO": "ISAAC SILVA DE LIMA", "QT_VOTOS_NOMINAIS_VALIDOS": 1934, "AGREMIACAO": "PDT"}, {"SG_PARTIDO": "PDT", "NM_CANDIDATO": "LINDDA FLÁVIA MACHADO CANUTO CHAVES", "QT_VOTOS_NOMINAIS_VALIDOS": 428, "AGREMIACAO": "PDT"}, {"SG_PARTIDO": "PDT", "NM_CANDIDATO": "LUIZ FERNANDES ALVES JÚNIOR", "QT_VOTOS_NOMINAIS_VALIDOS": 123, "AGREMIACAO": "PDT"}, {"SG_PARTIDO": "PDT", "NM_CANDIDATO": "SERGIO FELISMINO DOS SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 381, "AGREMIACAO": "PDT"}, {"SG_PARTIDO": "PDT", "NM_CANDIDATO": "VALDEMIR SOARES DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 66, "AGREMIACAO": "PDT"}, {"SG_PARTIDO": "PMB", "NM_CANDIDATO": "GILVAN DA SILVA MENEZES", "QT_VOTOS_NOMINAIS_VALIDOS": 130, "AGREMIACAO": "PMB"}, {"SG_PARTIDO": "PMB", "NM_CANDIDATO": "JAMMES STENIO SOBREIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 26, "AGREMIACAO": "PMB"}, {"SG_PARTIDO": "PMB", "NM_CANDIDATO": "JANILENE DUARTE DOS SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 99, "AGREMIACAO": "PMB"}, {"SG_PARTIDO": "PMN", "NM_CANDIDATO": "ISMAEL DAMIÃO DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 365, "AGREMIACAO": "PMN"}, {"SG_PARTIDO": "PMN", "NM_CANDIDATO": "MARCELO ANTÔNIO DE ALBUQUERQUE CAVALCANTE", "QT_VOTOS_NOMINAIS_VALIDOS": 357, "AGREMIACAO": "PMN"}, {"SG_PARTIDO": "PMN", "NM_CANDIDATO": "MARIA JOSÉ DO NASCIMENTO SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 50, "AGREMIACAO": "PMN"}, {"SG_PARTIDO": "PP", "NM_CANDIDATO": "ARTHUR CESAR PEREIRA DE LIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 219452, "AGREMIACAO": "PP"}, {"SG_PARTIDO": "PP", "NM_CANDIDATO": "DANIEL BARBOSA DE ALMEIDA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 63385, "AGREMIACAO": "PP"}, {"SG_PARTIDO": "PP", "NM_CANDIDATO": "FABIO MICHEY COSTA DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 60767, "AGREMIACAO": "PP"}, {"SG_PARTIDO": "PP", "NM_CANDIDATO": "FLAVIO ANTONIO MORENO DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 15435, "AGREMIACAO": "PP"}, {"SG_PARTIDO": "PP", "NM_CANDIDATO": "GILVAN GOMES BARROS", "QT_VOTOS_NOMINAIS_VALIDOS": 53732, "AGREMIACAO": "PP"}, {"SG_PARTIDO": "PP", "NM_CANDIDATO": "JOAO VICTOR LOUREIRO PESSOA CATUNDA", "QT_VOTOS_NOMINAIS_VALIDOS": 24754, "AGREMIACAO": "PP"}, {"SG_PARTIDO": "PP", "NM_CANDIDATO": "LARA LIRA DE OMENA", "QT_VOTOS_NOMINAIS_VALIDOS": 5443, "AGREMIACAO": "PP"}, {"SG_PARTIDO": "PP", "NM_CANDIDATO": "MARIA DA CONCEIÇÃO TEIXEIRA TAVARES", "QT_VOTOS_NOMINAIS_VALIDOS": 1633, "AGREMIACAO": "PP"}, {"SG_PARTIDO": "PP", "NM_CANDIDATO": "MARLY RIBEIRO DE SOUZA APRIGIO", "QT_VOTOS_NOMINAIS_VALIDOS": 1475, "AGREMIACAO": "PP"}, {"SG_PARTIDO": "PP", "NM_CANDIDATO": "MARX BELTRÃO LIMA SIQUEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 88512, "AGREMIACAO": "PP"}, {"SG_PARTIDO": "PSB", "NM_CANDIDATO": "AMANDA KAROLINE DE ANUCENA MENDONÇA", "QT_VOTOS_NOMINAIS_VALIDOS": 1408, "AGREMIACAO": "PSB"}, {"SG_PARTIDO": "PSB", "NM_CANDIDATO": "CLEBER COSTA DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 4778, "AGREMIACAO": "PSB"}, {"SG_PARTIDO": "PSB", "NM_CANDIDATO": "EDUARDA NICOLE SÁ CALHEIROS", "QT_VOTOS_NOMINAIS_VALIDOS": 350, "AGREMIACAO": "PSB"}, {"SG_PARTIDO": "PSB", "NM_CANDIDATO": "GEORGE LISBOA JÚNIOR", "QT_VOTOS_NOMINAIS_VALIDOS": 3678, "AGREMIACAO": "PSB"}, {"SG_PARTIDO": "PSB", "NM_CANDIDATO": "JOSÉ SIDERLANE ARAÚJO DE MENDONÇA", "QT_VOTOS_NOMINAIS_VALIDOS": 7492, "AGREMIACAO": "PSB"}, {"SG_PARTIDO": "PSB", "NM_CANDIDATO": "JOÃO ANTÔNIO HOLANDA CALDAS", "QT_VOTOS_NOMINAIS_VALIDOS": 92594, "AGREMIACAO": "PSB"}, {"SG_PARTIDO": "PSB", "NM_CANDIDATO": "LUIZ DIEGO RAMOS RODRIGUES", "QT_VOTOS_NOMINAIS_VALIDOS": 1038, "AGREMIACAO": "PSB"}, {"SG_PARTIDO": "PSB", "NM_CANDIDATO": "MARCELLA SOARES DIAS FERNANDES", "QT_VOTOS_NOMINAIS_VALIDOS": 1912, "AGREMIACAO": "PSB"}, {"SG_PARTIDO": "PSB", "NM_CANDIDATO": "RODRIGO DE MELO LUZ", "QT_VOTOS_NOMINAIS_VALIDOS": 3235, "AGREMIACAO": "PSB"}, {"SG_PARTIDO": "PSB", "NM_CANDIDATO": "RONIVALDO LOURENÇO DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 544, "AGREMIACAO": "PSB"}, {"SG_PARTIDO": "PSD", "NM_CANDIDATO": "ALAN HELTON DE OMENA BALBINO", "QT_VOTOS_NOMINAIS_VALIDOS": 3334, "AGREMIACAO": "PSD"}, {"SG_PARTIDO": "PSD", "NM_CANDIDATO": "AMARO ELIAS DOS SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 1278, "AGREMIACAO": "PSD"}, {"SG_PARTIDO": "PSD", "NM_CANDIDATO": "ANA CAROLINA BELTRÃO PEIXOTO", "QT_VOTOS_NOMINAIS_VALIDOS": 1225, "AGREMIACAO": "PSD"}, {"SG_PARTIDO": "PSD", "NM_CANDIDATO": "EDUARDO ÍTALO BASTOS DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 485, "AGREMIACAO": "PSD"}, {"SG_PARTIDO": "PSD", "NM_CANDIDATO": "ILDO RAFAEL DE VASCONCELOS", "QT_VOTOS_NOMINAIS_VALIDOS": 5512, "AGREMIACAO": "PSD"}, {"SG_PARTIDO": "PSD", "NM_CANDIDATO": "ISABELLA REGUEIRA ALVES LARANJEIRAS", "QT_VOTOS_NOMINAIS_VALIDOS": 1201, "AGREMIACAO": "PSD"}, {"SG_PARTIDO": "PSD", "NM_CANDIDATO": "JOÃO GABRIEL COSTA LINS", "QT_VOTOS_NOMINAIS_VALIDOS": 2622, "AGREMIACAO": "PSD"}, {"SG_PARTIDO": "PSD", "NM_CANDIDATO": "LUIZ GUSTAVO DA SILVA LIMA", "QT_VOTOS_NOMINAIS_VALIDOS": 37100, "AGREMIACAO": "PSD"}, {"SG_PARTIDO": "PSD", "NM_CANDIDATO": "SERGIO CABRAL BARBOSA", "QT_VOTOS_NOMINAIS_VALIDOS": 76, "AGREMIACAO": "PSD"}, {"SG_PARTIDO": "PSD", "NM_CANDIDATO": "TEREZA NELMA DA SILVA PORTO VIANA SOARES", "QT_VOTOS_NOMINAIS_VALIDOS": 24722, "AGREMIACAO": "PSD"}, {"SG_PARTIDO": "PSDB", "NM_CANDIDATO": "ANA MARIA PEREIRA HORA", "QT_VOTOS_NOMINAIS_VALIDOS": 1971, "AGREMIACAO": "PSDB/CIDADANIA"}, {"SG_PARTIDO": "PSDB", "NM_CANDIDATO": "ELIELZA MELQUIADES DOS SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 2413, "AGREMIACAO": "PSDB/CIDADANIA"}, {"SG_PARTIDO": "PSDB", "NM_CANDIDATO": "GLAUCO MOREIRA LEITÃO", "QT_VOTOS_NOMINAIS_VALIDOS": 2262, "AGREMIACAO": "PSDB/CIDADANIA"}, {"SG_PARTIDO": "PSDB", "NM_CANDIDATO": "HEMERSON CASADO GAMA", "QT_VOTOS_NOMINAIS_VALIDOS": 2327, "AGREMIACAO": "PSDB/CIDADANIA"}, {"SG_PARTIDO": "PSDB", "NM_CANDIDATO": "MARIA TAVARES FERRO", "QT_VOTOS_NOMINAIS_VALIDOS": 2024, "AGREMIACAO": "PSDB/CIDADANIA"}, {"SG_PARTIDO": "PSDB", "NM_CANDIDATO": "MONICA LEITE PEIXOTO ALMEIDA", "QT_VOTOS_NOMINAIS_VALIDOS": 598, "AGREMIACAO": "PSDB/CIDADANIA"}, {"SG_PARTIDO": "PSDB", "NM_CANDIDATO": "PEDRO TORRES BRANDAO VILELA", "QT_VOTOS_NOMINAIS_VALIDOS": 25770, "AGREMIACAO": "PSDB/CIDADANIA"}, {"SG_PARTIDO": "PSDB", "NM_CANDIDATO": "RENNÉ COSMO DA COSTA", "QT_VOTOS_NOMINAIS_VALIDOS": 4721, "AGREMIACAO": "PSDB/CIDADANIA"}, {"SG_PARTIDO": "PSOL", "NM_CANDIDATO": "ALYCIA EDUARDA OLIVEIRA DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 3519, "AGREMIACAO": "PSOL/REDE"}, {"SG_PARTIDO": "PSOL", "NM_CANDIDATO": "ANA CRISTINA GONZAGA PEREIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 62, "AGREMIACAO": "PSOL/REDE"}, {"SG_PARTIDO": "PSOL", "NM_CANDIDATO": "JOSÉ WELLISON DE LIMA LIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 368, "AGREMIACAO": "PSOL/REDE"}, {"SG_PARTIDO": "PSOL", "NM_CANDIDATO": "MARIA CLARA CORREIA VASCONCELOS", "QT_VOTOS_NOMINAIS_VALIDOS": 210, "AGREMIACAO": "PSOL/REDE"}, {"SG_PARTIDO": "PSTU", "NM_CANDIDATO": "PAULO SÉRGIO DA SILVA FALCÃO", "QT_VOTOS_NOMINAIS_VALIDOS": 256, "AGREMIACAO": "PSTU"}, {"SG_PARTIDO": "PT", "NM_CANDIDATO": "MARCIA DANIELLI SILVA DE ASSUNÇÃO", "QT_VOTOS_NOMINAIS_VALIDOS": 3705, "AGREMIACAO": "PT/PCDOB/PV"}, {"SG_PARTIDO": "PT", "NM_CANDIDATO": "PAULO FERNANDO DOS SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 65814, "AGREMIACAO": "PT/PCDOB/PV"}, {"SG_PARTIDO": "PTB", "NM_CANDIDATO": "DAYSE VANDERLEI LINS", "QT_VOTOS_NOMINAIS_VALIDOS": 35, "AGREMIACAO": "PTB"}, {"SG_PARTIDO": "PTB", "NM_CANDIDATO": "EBER CARLOS GOES SALES LEÃO DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 2329, "AGREMIACAO": "PTB"}, {"SG_PARTIDO": "PTB", "NM_CANDIDATO": "FRANCISCO DE SOUZA IRMÃO", "QT_VOTOS_NOMINAIS_VALIDOS": 509, "AGREMIACAO": "PTB"}, {"SG_PARTIDO": "PTB", "NM_CANDIDATO": "ISMAEL DA GUIA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 3533, "AGREMIACAO": "PTB"}, {"SG_PARTIDO": "PTB", "NM_CANDIDATO": "JAMERSON FERNANDES BEZERRA FRANÇA", "QT_VOTOS_NOMINAIS_VALIDOS": 1121, "AGREMIACAO": "PTB"}, {"SG_PARTIDO": "PTB", "NM_CANDIDATO": "JOYCE SUELLEN NASCIMENTO SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 99, "AGREMIACAO": "PTB"}, {"SG_PARTIDO": "PTB", "NM_CANDIDATO": "MARIA DE FÁTIMA RIBEIRO DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 973, "AGREMIACAO": "PTB"}, {"SG_PARTIDO": "PTB", "NM_CANDIDATO": "WELLINGTON RODRIGUES FRAGOSO", "QT_VOTOS_NOMINAIS_VALIDOS": 1021, "AGREMIACAO": "PTB"}, {"SG_PARTIDO": "PV", "NM_CANDIDATO": "BRUNNO LEONARDO VEIGA LOPES", "QT_VOTOS_NOMINAIS_VALIDOS": 6015, "AGREMIACAO": "PT/PCDOB/PV"}, {"SG_PARTIDO": "PV", "NM_CANDIDATO": "CLAUDIO MOREIRA DA SILVA", "QT_VOTOS_NOMINAIS_VALIDOS": 7019, "AGREMIACAO": "PT/PCDOB/PV"}, {"SG_PARTIDO": "PV", "NM_CANDIDATO": "COSME ALVES CORDEIRO", "QT_VOTOS_NOMINAIS_VALIDOS": 6229, "AGREMIACAO": "PT/PCDOB/PV"}, {"SG_PARTIDO": "PV", "NM_CANDIDATO": "JOSÉ EDUARDO ACCIOLY CANUTO", "QT_VOTOS_NOMINAIS_VALIDOS": 10270, "AGREMIACAO": "PT/PCDOB/PV"}, {"SG_PARTIDO": "PV", "NM_CANDIDATO": "LUCIANO SURUAGY DO AMARAL FILHO", "QT_VOTOS_NOMINAIS_VALIDOS": 101508, "AGREMIACAO": "PT/PCDOB/PV"}, {"SG_PARTIDO": "PV", "NM_CANDIDATO": "MARIA FATIMA GALINA FORTES FERREIRA SANTIAGO", "QT_VOTOS_NOMINAIS_VALIDOS": 9841, "AGREMIACAO": "PT/PCDOB/PV"}, {"SG_PARTIDO": "PV", "NM_CANDIDATO": "MARIA GABRIELLA MARTINS COELHO DA PAZ", "QT_VOTOS_NOMINAIS_VALIDOS": 11208, "AGREMIACAO": "PT/PCDOB/PV"}, {"SG_PARTIDO": "PV", "NM_CANDIDATO": "SANDRA DO CARMO DE MENEZES", "QT_VOTOS_NOMINAIS_VALIDOS": 699, "AGREMIACAO": "PT/PCDOB/PV"}, {"SG_PARTIDO": "REPUBLICANOS", "NM_CANDIDATO": "ANTONIO PALMERY MELO NETO", "QT_VOTOS_NOMINAIS_VALIDOS": 4733, "AGREMIACAO": "REPUBLICANOS"}, {"SG_PARTIDO": "REPUBLICANOS", "NM_CANDIDATO": "FRANCISCO JOÃO CARVALHO BELTRÃO", "QT_VOTOS_NOMINAIS_VALIDOS": 21408, "AGREMIACAO": "REPUBLICANOS"}, {"SG_PARTIDO": "REPUBLICANOS", "NM_CANDIDATO": "JOSAN LEITE PEREIRA BARROS", "QT_VOTOS_NOMINAIS_VALIDOS": 5697, "AGREMIACAO": "REPUBLICANOS"}, {"SG_PARTIDO": "REPUBLICANOS", "NM_CANDIDATO": "JOSE AURELIO DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 2323, "AGREMIACAO": "REPUBLICANOS"}, {"SG_PARTIDO": "REPUBLICANOS", "NM_CANDIDATO": "JOSÉ GILVAN RIBEIRO DE ALMEIDA FILHO", "QT_VOTOS_NOMINAIS_VALIDOS": 8699, "AGREMIACAO": "REPUBLICANOS"}, {"SG_PARTIDO": "REPUBLICANOS", "NM_CANDIDATO": "JOSÉ NILTON LIMA DE OLIVEIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 14696, "AGREMIACAO": "REPUBLICANOS"}, {"SG_PARTIDO": "REPUBLICANOS", "NM_CANDIDATO": "LEILA ANDRÉA LESSA LIMA DE MEDEIROS", "QT_VOTOS_NOMINAIS_VALIDOS": 532, "AGREMIACAO": "REPUBLICANOS"}, {"SG_PARTIDO": "REPUBLICANOS", "NM_CANDIDATO": "MOSABELLE RODRIGUES BRASILEIRO MONTEIRO", "QT_VOTOS_NOMINAIS_VALIDOS": 9079, "AGREMIACAO": "REPUBLICANOS"}, {"SG_PARTIDO": "REPUBLICANOS", "NM_CANDIDATO": "NIVALDO FERREIRA DE ALBUQUERQUE NETO", "QT_VOTOS_NOMINAIS_VALIDOS": 67697, "AGREMIACAO": "REPUBLICANOS"}, {"SG_PARTIDO": "REPUBLICANOS", "NM_CANDIDATO": "VALQUIRIA RAQUEL FERREIRA DA COSTA", "QT_VOTOS_NOMINAIS_VALIDOS": 9206, "AGREMIACAO": "REPUBLICANOS"}, {"SG_PARTIDO": "SOLIDARIEDADE", "NM_CANDIDATO": "ALINE VANESSA PINHEIRO SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 91, "AGREMIACAO": "SOLIDARIEDADE"}, {"SG_PARTIDO": "SOLIDARIEDADE", "NM_CANDIDATO": "AMADEU JOSE FERREIRA", "QT_VOTOS_NOMINAIS_VALIDOS": 233, "AGREMIACAO": "SOLIDARIEDADE"}, {"SG_PARTIDO": "SOLIDARIEDADE", "NM_CANDIDATO": "JOSE ANDRÉ DOS SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 130, "AGREMIACAO": "SOLIDARIEDADE"}, {"SG_PARTIDO": "SOLIDARIEDADE", "NM_CANDIDATO": "JOSE ANILDO DOS SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 243, "AGREMIACAO": "SOLIDARIEDADE"}, {"SG_PARTIDO": "SOLIDARIEDADE", "NM_CANDIDATO": "MONICA CARVALHO DE ALMEIDA", "QT_VOTOS_NOMINAIS_VALIDOS": 555, "AGREMIACAO": "SOLIDARIEDADE"}, {"SG_PARTIDO": "SOLIDARIEDADE", "NM_CANDIDATO": "NADJA SARAIVA LEITE", "QT_VOTOS_NOMINAIS_VALIDOS": 32, "AGREMIACAO": "SOLIDARIEDADE"}, {"SG_PARTIDO": "SOLIDARIEDADE", "NM_CANDIDATO": "VALDEMIR FERREIRA DOS SANTOS", "QT_VOTOS_NOMINAIS_VALIDOS": 133, "AGREMIACAO": "SOLIDARIEDADE"}, {"SG_PARTIDO": "UNIÃO", "NM_CANDIDATO": "ALFREDO GASPAR DE MENDONÇA NETO", "QT_VOTOS_NOMINAIS_VALIDOS": 102039, "AGREMIACAO": "UNIÃO"}, {"SG_PARTIDO": "UNIÃO", "NM_CANDIDATO": "BRUNO RODRIGO VALENÇA DE ARAUJO", "QT_VOTOS_NOMINAIS_VALIDOS": 43644, "AGREMIACAO": "UNIÃO"}, {"SG_PARTIDO": "UNIÃO", "NM_CANDIDATO": "MARCIO HENRIQUE DE CARVALHO LIMA", "QT_VOTOS_NOMINAIS_VALIDOS": 6538, "AGREMIACAO": "UNIÃO"}, {"SG_PARTIDO": "UNIÃO", "NM_CANDIDATO": "MARIA LUCIA SILVERIO CAVALCANTE", "QT_VOTOS_NOMINAIS_VALIDOS": 78, "AGREMIACAO": "UNIÃO"}, {"SG_PARTIDO": "UNIÃO", "NM_CANDIDATO": "MIRIAN DA SILVEIRA  MONTE", "QT_VOTOS_NOMINAIS_VALIDOS": 2969, "AGREMIACAO": "UNIÃO"}, {"SG_PARTIDO": "UNIÃO", "NM_CANDIDATO": "ROSA MARIA CUNHA SEIXAS NETA", "QT_VOTOS_NOMINAIS_VALIDOS": 546, "AGREMIACAO": "UNIÃO"}, {"SG_PARTIDO": "UNIÃO", "NM_CANDIDATO": "TÚLIO OSTILIO PEIXOTO CAVALCANTE", "QT_VOTOS_NOMINAIS_VALIDOS": 1486, "AGREMIACAO": "UNIÃO"}, {"SG_PARTIDO": "UNIÃO", "NM_CANDIDATO": "WARLLEN DAVID BEZERRA NASCIMENTO MESQUITA", "QT_VOTOS_NOMINAIS_VALIDOS": 10278, "AGREMIACAO": "UNIÃO"}, {"SG_PARTIDO": "UP", "NM_CANDIDATO": "LENILDA LUNA DE ALMEIDA", "QT_VOTOS_NOMINAIS_VALIDOS": 2298, "AGREMIACAO": "UP"}];
+    const NUM_CADEIRAS   = 9;
+
+    const ajustesAgrem = {};
+
+    const candidatos = candidatosRaw.map(function(c) {
+        return {
+            nome: c.NM_CANDIDATO,
+            votos: c.QT_VOTOS_NOMINAIS_VALIDOS,
+            partidoOriginal: c.SG_PARTIDO,
+            partidoAtual: c.SG_PARTIDO,
+            agreOriginal: c.AGREMIACAO,
+            agreAtual: c.AGREMIACAO
+        };
+    });
+
+    function renderListas() {
+        const listaPSB = document.getElementById("lista-psb");
+        const listaOutros = document.getElementById("lista-outros");
+        listaPSB.innerHTML = "";
+        listaOutros.innerHTML = "";
+
+        // Ordena candidatos por votos (maior -> menor)
+        const ordenados = candidatos.slice().sort(function(a, b) {
+            return b.votos - a.votos;
+        });
+
+        ordenados.forEach(function(c) {
+            const li = document.createElement("li");
+            const rotuloPartido = (c.partidoAtual === "PSB") ? "PSB" :
+                                  (c.partidoOriginal === "PSB" ? "OUTROS" : c.partidoOriginal);
+            const texto = c.nome + " — " + c.votos + " votos (" + rotuloPartido + ")";
+            li.textContent = texto;
+
+            li.onclick = function() { onClickCandidato(c); };
+
+            if (c.partidoAtual === "PSB") {
+                listaPSB.appendChild(li);
+            } else {
+                listaOutros.appendChild(li);
+            }
+        });
+    }
+
+    function aplicaAjuste(antes, depois, votos) {
+        if (antes) {
+            if (!ajustesAgrem[antes]) ajustesAgrem[antes] = 0;
+            ajustesAgrem[antes] -= votos;
+        }
+        if (depois) {
+            if (!ajustesAgrem[depois]) ajustesAgrem[depois] = 0;
+            ajustesAgrem[depois] += votos;
+        }
+    }
+
+    function onClickCandidato(c) {
+        const antesAgre = c.agreAtual;
+
+        if (c.partidoAtual === "PSB") {
+            if (c.partidoOriginal === "PSB") {
+                c.partidoAtual = "OUTROS";
+                c.agreAtual = null;
+            } else {
+                c.partidoAtual = c.partidoOriginal;
+                c.agreAtual = c.agreOriginal;
+            }
+        } else {
+            c.partidoAtual = "PSB";
+            c.agreAtual = "PSB";
+        }
+
+        const depoisAgre = c.agreAtual;
+        aplicaAjuste(antesAgre, depoisAgre, c.votos);
+
+        renderListas();
+        updateChart();
+    }
+
+    function getVotosAtualPorAgrem() {
+        const votosAtual = {};
+        partidosLabels.forEach(function(label, idx) {
+            const base = votosBase[idx];
+            const adj  = ajustesAgrem[label] || 0;
+            let v = base + adj;
+            if (v < 0) v = 0;
+            votosAtual[label] = v;
+        });
+        return votosAtual;
+    }
+
+    function distribuirCadeirasJS(votosAtual, labels, numCadeiras) {
+        const partidos = labels.slice();
+        const votos = partidos.map(function(p) {
+            const v = votosAtual[p] || 0;
+            return v < 0 ? 0 : v;
+        });
+
+        const totalVotos = votos.reduce(function(a, b) { return a + b; }, 0);
+        const QE = numCadeiras > 0 ? Math.floor(totalVotos / numCadeiras) : 0;
+
+        const cadeiras = new Array(partidos.length).fill(0);
+        const qp = votos.map(function(v) {
+            return QE > 0 ? Math.floor(v / QE) : 0;
+        });
+
+        for (let i = 0; i < partidos.length; i++) {
+            cadeiras[i] = qp[i];
+        }
+
+        let totalC = cadeiras.reduce(function(a, b) { return a + b; }, 0);
+        const sobras = new Array(partidos.length).fill(0);
+        let ultimaMedia = null;
+
+        if (totalVotos === 0 || partidos.length === 0) {
+            return { partidos, votos, qp, cadeiras, sobras, QE, ultimaMedia: 0 };
+        }
+
+        while (totalC < numCadeiras) {
+            let bestIdx = -1;
+            let bestMedia = -1;
+            for (let i = 0; i < partidos.length; i++) {
+                const media = votos[i] / (cadeiras[i] + 1);
+                if (media > bestMedia) {
+                    bestMedia = media;
+                    bestIdx = i;
+                }
+            }
+            if (bestIdx === -1) break;
+            ultimaMedia = bestMedia;
+            cadeiras[bestIdx] += 1;
+            sobras[bestIdx] += 1;
+            totalC += 1;
+        }
+
+        return { partidos, votos, qp, cadeiras, sobras, QE, ultimaMedia };
+    }
+
+    function calcularFaltamNovaCadeira(dist) {
+        const faltam = {};
+        const qMinAtual = dist.ultimaMedia || 0;
+        dist.partidos.forEach(function(p, i) {
+            const denom = dist.cadeiras[i] + 1;
+            const alvo = qMinAtual * denom;
+            const diff = alvo - dist.votos[i];
+            faltam[p] = diff > 0 ? Math.floor(diff) + 1 : 0;
+        });
+        return { faltam, qMinAtual };
+    }
+
+    const ctx = document.getElementById("chart-interativo").getContext("2d");
+    const highlightLabel = "PSB";
+
+    const votosInicialPorAgrem = getVotosAtualPorAgrem();
+    const distInicial = distribuirCadeirasJS(votosInicialPorAgrem, partidosLabels, NUM_CADEIRAS);
+    const faltamInicial = calcularFaltamNovaCadeira(distInicial);
+
+    const labelsComCadeirasInicial = distInicial.partidos.map(function(p, i) {
+        return p + " (" + distInicial.cadeiras[i] + ")";
+    });
+
+    const chartData = {
+        labels: labelsComCadeirasInicial,
+        datasets: [
+            {
+                label: "Votos atuais",
+                data: distInicial.votos.slice(),
+                backgroundColor: "#4E79A7"
+            },
+            {
+                label: "Votos necessários para tomar a última cadeira",
+                data: distInicial.partidos.map(function(p) {
+                    return faltamInicial.faltam[p] || 0;
+                }),
+                backgroundColor: "#F28E2B"
+            }
+        ]
+    };
+
+    const chartOptions = {
+        responsive: true,
+        scales: {
+            x: {
+                stacked: true,
+                ticks: {
+                    callback: function(value, index) {
+                        const label = this.getLabelForValue(index);
+                        if (label.includes(highlightLabel)) {
+                            return "⟦ " + label + " ⟧";
+                        }
+                        return label;
+                    }
+                }
+            },
+            y: {
+                stacked: true,
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "Votos"
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                position: "top"
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const v = context.parsed.y || 0;
+                        return context.dataset.label + ": " + v.toLocaleString("pt-BR");
+                    }
+                }
+            }
+        }
+    };
+
+    const chart = new Chart(ctx, {
+        type: "bar",
+        data: chartData,
+        options: chartOptions
+    });
+
+    function updateChart() {
+        const votosAtualPorAgrem = getVotosAtualPorAgrem();
+        const dist = distribuirCadeirasJS(votosAtualPorAgrem, partidosLabels, NUM_CADEIRAS);
+        const faltamInfo = calcularFaltamNovaCadeira(dist);
+
+        const labelsComCadeiras = dist.partidos.map(function(p, i) {
+            return p + " (" + dist.cadeiras[i] + ")";
+        });
+
+        chart.data.labels = labelsComCadeiras;
+        chart.data.datasets[0].data = dist.votos.slice();
+        chart.data.datasets[1].data = dist.partidos.map(function(p) {
+            return faltamInfo.faltam[p] || 0;
+        });
+
+        chart.update();
+    }
+
+    renderListas();
+    updateChart();
+</script>
+
+</body>
+</html>
